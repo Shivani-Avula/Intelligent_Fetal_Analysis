@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare Scans - Fetal Anomaly Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('static/Fetal_image.jpeg');
+            background-size: cover; /* Ensures the image covers the entire background */
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #333;
+            padding: 0 15px;
+            margin: 0;
+            background-color: #92969d;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: url('static/fetal_image.jpg');
+            background-size: cover; /* Ensures the image covers the entire background */
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #4caf50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-report {
+            background-color: #4caf50;
+        }
+
+        .btn-report:hover {
+            background-color: #388e3c;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header div {
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .welcome-btn {
+            background-color: #28a745;
+            color: white;
+            font-size: 1rem;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+            text-align: center;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .welcome-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header with username and user ID -->
+    <div class="header">
+        <div>Welcome, {{ username }} (ID: {{ user_id }})</div>
+        <a href="{{ url_for('welcome') }}" class="welcome-btn">Go to Welcome Page</a>
+    </div>
+
+    <div class="container">
+        <h1>Compare Ultrasound Scans</h1>
+        <form method="POST" action="/compare">
+            <div class="form-group">
+                <label for="scan_1">Select Scan 1:</label>
+                <select name="scan_1" id="scan_1" required>
+                    <option value="" disabled selected>Select a scan</option>
+                    {% for result in previous_results %}
+                        <option value="{{ result.id }}">{{ result.filename }} - {{ result.prediction }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="scan_2">Select Scan 2:</label>
+                <select name="scan_2" id="scan_2" required>
+                    <option value="" disabled selected>Select a scan</option>
+                    {% for result in previous_results %}
+                        <option value="{{ result.id }}">{{ result.filename }} - {{ result.prediction }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit">Compare</button>
+        </form>
+
+        <!-- Generate Comparison Report -->
+        <form method="POST" action="{{ url_for('generate_comparison_report', user_id=user_id) }}">
+            <input type="hidden" name="scan_1" id="hidden_scan_1">
+            <input type="hidden" name="scan_2" id="hidden_scan_2">
+            <button type="submit" class="btn-report">Generate Comparison Report</button>
+        </form>
+    </div>
+
+    <script>
+        // Sync the selected scans with the hidden inputs in the report form
+        const scan1Dropdown = document.getElementById('scan_1');
+        const scan2Dropdown = document.getElementById('scan_2');
+        const hiddenScan1Input = document.getElementById('hidden_scan_1');
+        const hiddenScan2Input = document.getElementById('hidden_scan_2');
+
+        function updateHiddenInputs() {
+            hiddenScan1Input.value = scan1Dropdown.value;
+            hiddenScan2Input.value = scan2Dropdown.value;
+        }
+
+        // Update hidden inputs whenever the dropdowns change
+        scan1Dropdown.addEventListener('change', updateHiddenInputs);
+        scan2Dropdown.addEventListener('change', updateHiddenInputs);
+
+        // Initialize hidden inputs with default selected values
+        updateHiddenInputs();
+    </script>
+
+</body>
+</html>

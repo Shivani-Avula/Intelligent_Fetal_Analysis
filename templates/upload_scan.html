@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Ultrasound Scan</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #b2c9e0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background: url('static/fetal7.jpeg');
+            background-size: cover;
+            border-radius: 100px;
+            padding: 50px;
+            box-shadow: 0 4px 6px rgba(154, 83, 83, 0.1);
+            max-width: 80%;
+            margin: auto;
+        }
+
+        h2, h3, h4 {
+            color: #343a40;
+        }
+
+        .form-control {
+            border-radius: 6px;
+        }
+
+        .btn {
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: url('static/fetal10.jpg');
+            background-size: cover; 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header div {
+            font-size: 1rem;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .welcome-btn {
+            background-color: #28a745;
+            color: white;
+            font-size: 1rem;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+            text-align: center;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .welcome-btn:hover {
+            background-color: #218838;
+        }
+
+        .logout-link {
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .user-info {
+            text-align: right;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header with username and user ID -->
+    <div class="header">
+        <div>Welcome, {{ username }} (ID: {{ user_id }})</div>
+        <div>
+        <a href="{{ url_for('welcome') }}" class="welcome-btn">Go to Welcome Page</a>
+        <br>
+        <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm">Logout</a>
+        </div>
+    </div>
+
+
+    <div class="container mt-5">
+        <!-- Page Title -->
+        <h2 class="text-center mb-4">Upload Ultrasound Scan</h2>
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="alert alert-{{ messages[0][0] }} mt-3 text-center">
+            {{ messages[0][1] }}
+        </div>
+        {% endif %}
+        {% endwith %}
+        
+        <!-- Upload Form -->
+        <form method="POST" action="/" enctype="multipart/form-data" class="mb-4 text-center">
+            <div class="form-group">
+                <label for="file">Upload Scan</label>
+                <input type="file" name="file" class="form-control" id="file" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm mt-2">Upload Scan</button>
+        </form>
+        
+        <!-- Divider -->
+        <hr>
+        
+        <!-- Previous Results Table -->
+        <h4 class="text-center">Your Previous Scan Results</h4>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Scan Filename</th>
+                    <th scope="col">Prediction</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in previous_results %}
+                <tr>
+                    <td>{{ result.filename }}</td>
+                    <td>{{ result.prediction }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Fetal Anomaly Detection</title>
+    <style>
+        /* Reset default margins and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: url('static/fetal4.jpg');
+            background-size: cover; /* Ensures the image covers the entire background */
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #333;
+            padding: 0 15px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding-top: 50px;
+        }
+
+        header h1 {
+            text-align: center;
+            font-size: 3rem;
+            color: #0e0e0e;
+            margin-bottom: 30px;
+        }
+
+        .welcome-message h2 {
+            font-size: 2rem;
+            color: #0e0f0e;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .welcome-message p {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #0a0909;
+            margin-bottom: 30px;
+        }
+
+        .options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .options .btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 15px 30px;
+            font-size: 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .options .btn:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            .options {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .options .btn {
+                width: 100%;
+                padding: 12px 0;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Fetal Anomaly Detection Heading -->
+        <header>
+            <h1>Fetal Anomaly Detection</h1>
+        </header>
+
+        <!-- Welcome Message -->
+        <section class="welcome-message">
+            <h2>Welcome, {{ username }}!</h2>
+            <br><br>
+            <p>You've successfully logged in to the Fetal Anomaly Detection System.</p>
+        </section>
+
+        <!-- User Options Buttons -->
+        <div class="options">
+            <a href="{{ url_for('index') }}" class="btn">Upload Scan</a>
+            <a href="{{ url_for('compare') }}" class="btn">Compare Scans</a>
+            <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+        </div>
+    </div>
+</body>
+</html>
